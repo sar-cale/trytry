@@ -10,16 +10,50 @@
 
     <title>TaTaOS</title>
 
-    <!-- 📱 应用图标设置 -->
-    <link rel="apple-touch-icon" href="ttps://i.postimg.cc/GtWHgzvk/tataos.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="https://i.postimg.cc/GtWHgzvk/tataos.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://i.postimg.cc/GtWHgzvk/tataos.png" />
-    <link rel="apple-touch-icon" sizes="167x167" href="https://i.postimg.cc/GtWHgzvk/tataos.png" />
+    <!-- 1. (核心) 为苹果设备设置主屏幕图标 -->
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/Kj8JnRcp/267611-CC01-F8-A3-B4910-A2-C2-FFDE479-DC.jpg" />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="https://i.postimg.cc/GtWHgzvk/tataos.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="https://i.postimg.cc/GtWHgzvk/tataos.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="167x167"
+      href="https://i.postimg.cc/GtWHgzvk/tataos.png"
+    />
+
+    <!-- 2. (核心) 链接到manifest文件 -->
     <link rel="manifest" href="manifest.json" />
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/GtWHgzvk/tataos.png" />
+
+    <!-- 3. (核心) 告诉苹果设备，这是一个Web应用，可以全屏显示 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <!-- 4. (核心) 设置苹果设备全屏模式下的状态栏样式 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- 5. (可选) 设置应用在主屏幕上显示的标题 -->
+    <meta name="apple-mobile-web-app-title" content="TaTaOS" />
+
+    <!-- 6. (兼容) 为部分安卓浏览器提供支持 -->
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- 7. (备用) 标准浏览器页签图标 -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://i.postimg.cc/GtWHgzvk/tataos.png"
+    />
+
+    <title>TaTaOS</title>
 
     <!-- 💅 外链样式与脚本 -->
-    <link rel="stylesheet" href="style.css" />
+ <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
@@ -34,21 +68,22 @@
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
+    <style></style>
+
     <style id="custom-theme-style"></style>
   </head>
 
-<body>
+  <body>
     <div id="phone-screen">
-      <!-- 状态栏 -->
       <div id="status-bar">
         <span id="status-bar-time">12:00</span>
         <div id="status-bar-battery" class="battery-container">
           <span class="battery-text">--%</span>
-          <div class="battery-icon"><div class="battery-level"></div></div>
+          <div class="battery-icon">
+            <div class="battery-level"></div>
+          </div>
         </div>
       </div>
-
-      <!-- 通知栏 -->
       <div id="notification-bar">
         <img id="notification-avatar" src="" />
         <div id="notification-content">
@@ -57,103 +92,171 @@
         </div>
       </div>
 
-      <!-- 主屏幕 -->
+      <div id="video-call-floating-bubble" style="display: none">
+        <img id="video-floating-avatar" src="" />
+      </div>
+
+      <div id="floating-lyrics-bar">
+        <span id="floating-lyric-text">♪</span>
+
+        <div
+          id="lyrics-settings-btn"
+          style="cursor: pointer; display: flex; align-items: center; justify-content: center"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+            ></path>
+          </svg>
+        </div>
+        <span class="close-btn">×</span>
+      </div>
+
+      <div id="lock-screen-background-blur" style="display: none"></div>
+
       <div id="home-screen" class="screen active">
         <div class="home-screen-slider">
-          <!-- 第一页 -->
+          <!-- 第一页，把原来的内容都放进来 -->
           <div class="home-page">
             <div id="main-content-area">
               <div id="profile-widget">
-                <img id="profile-banner-img"
-                     src="https://i.postimg.cc/k495F4W5/profile-banner.jpg"
-                     class="editable-image" />
+                <img
+                  id="profile-banner-img"
+                  src="https://i.postimg.cc/k495F4W5/profile-banner.jpg"
+                  class="editable-image"
+                />
 
                 <div class="profile-avatar-container">
-                  <img id="profile-avatar-img"
-                       src="https://i.postimg.cc/qRqpK5kP/anime-avatar.jpg"
-                       class="editable-image" />
+                  <img
+                    id="profile-avatar-img"
+                    src="https://i.postimg.cc/qRqpK5kP/anime-avatar.jpg"
+                    class="editable-image"
+                  />
+
+                  <img id="profile-avatar-frame" class="weibo-avatar-frame" src="" style="display: none" />
                 </div>
 
                 <div class="profile-info">
                   <p id="profile-username" class="editable-text">你的昵称</p>
                   <p id="profile-sub-username" class="editable-text">@your_id</p>
                   <p id="profile-bio" class="editable-text">点击这里编辑你的个性签名</p>
+                  <p id="profile-location" class="editable-text" data-placeholder="点击编辑地点">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                      ></path>
+                    </svg>
+                    <span>点击编辑地点</span>
+                  </p>
                 </div>
               </div>
-
-              <!-- 桌面应用图标区 -->
-              <div id="desktop-app-container">
-                <!-- QQ -->
-                <div class="desktop-app-icon" onclick="showScreen('chat-list-screen')">
-                  <div class="icon-bg-desktop">
-                    <img id="icon-img-qq" src="https://i.postimg.cc/MTC3Tkw8/IMG-6436.jpg" alt="QQ" />
+              <div id="desktop-layout">
+                <div id="desktop-widget-column">
+                  <div class="custom-widget-container">
+                    <div id="widget-bubble-1" class="widget-bubble editable-text" contenteditable="true">
+                      点击编辑文字
+                    </div>
+                    <div class="widget-circle-uploader">
+                      <img
+                        id="widget-image-1"
+                        src="https://i.postimg.cc/qRqpK5kP/anime-avatar.jpg"
+                        class="editable-image"
+                        title="点击更换图片"
+                      />
+                    </div>
+                    <div id="widget-subtext-1" class="widget-subtext editable-text" contenteditable="true">
+                      点击编辑文字
+                    </div>
                   </div>
-                  <span class="label">QQ</span>
+                  <div class="custom-widget-container">
+                    <div id="widget-bubble-2" class="widget-bubble editable-text" contenteditable="true">
+                      点击编辑文字
+                    </div>
+                    <div class="widget-circle-uploader">
+                      <img
+                        id="widget-image-2"
+                        src="https://i.postimg.cc/k495F4W5/profile-banner.jpg"
+                        class="editable-image"
+                        title="点击更换图片"
+                      />
+                    </div>
+                    <div id="widget-subtext-2" class="widget-subtext editable-text" contenteditable="true">
+                      点击编辑文字
+                    </div>
+                  </div>
                 </div>
-
-                <!-- 世界书 -->
-                <div class="desktop-app-icon" onclick="showScreen('world-book-screen')">
-                  <div class="icon-bg-desktop">
-                    <img id="icon-img-world-book" src="https://i.postimg.cc/HWf1JKzn/IMG-6435.jpg" alt="世界书" />
+                <div id="desktop-app-container">
+                  <div class="desktop-app-icon" onclick="showScreen('chat-list-screen')">
+                    <div class="icon-bg-desktop">
+                      <img id="icon-img-qq" src="https://i.postimg.cc/MTC3Tkw8/IMG-6436.jpg" alt="QQ" />
+                    </div>
+                    <span class="label">QQ</span>
                   </div>
-                  <span class="label">世界书</span>
-                </div>
-
-                <!-- 查手机 -->
-                <div id="check-phone-btn" class="desktop-app-icon">
-                  <div class="icon-bg-desktop">
-                    <img id="icon-img-check-phone" src="https://i.postimg.cc/RVwpwr0r/IMG-8348.jpg" alt="查手机" />
+                  <div class="desktop-app-icon" onclick="showScreen('world-book-screen')">
+                    <div class="icon-bg-desktop">
+                      <img id="icon-img-world-book" src="https://i.postimg.cc/HWf1JKzn/IMG-6435.jpg" alt="世界书" />
+                    </div>
+                    <span class="label">世界书</span>
                   </div>
-                  <span class="label">查手机</span>
-                </div>
-
-                <!-- kk查岗 -->
-                <div class="desktop-app-icon" id="kk-checkin-app-icon"
-                     onclick="(window.openCheckIn && openCheckIn()) ||
-                              (window.startCheckin && startCheckin()) ||
-                              (window.initKKCheckin && initKKCheckin()) ||
-                              (window.openKKCheckin && openKKCheckin())">
-                  <div class="icon-bg-desktop">
-                    <img id="icon-img-weibo" src="https://i.postimg.cc/MGwrL0nf/kitty.png" alt="kk查岗" />
+                  <div id="check-phone-btn" class="desktop-app-icon">
+                    <div class="icon-bg-desktop">
+                      <img id="icon-img-check-phone" src="https://i.postimg.cc/RVwpwr0r/IMG-8348.jpg" alt="查手机" />
+                    </div>
+                    <span class="label">查手机</span>
                   </div>
-                  <span class="label">kk查岗</span>
+                  <div class="desktop-app-icon" id="kk-checkin-app-icon">
+                    <div class="icon-bg-desktop">
+                      <img id="icon-img-weibo" src="https://i.postimg.cc/MGwrL0nf/kitty.png" alt="kk查岗" />
+                    </div>
+                    <span class="label">kk查岗</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-<!-- 底部 Dock 栏 -->
-      <div id="desktop-dock">
-        <div class="desktop-app-icon" onclick="showScreen('api-settings-screen')">
-          <div class="icon-bg-desktop">
-            <img id="icon-img-api-settings" src="https://i.postimg.cc/MK8rJ8t7/IMG-6438.jpg" alt="API设置" />
+        <!-- 底部 Dock 栏保持不变 -->
+        <div id="desktop-dock">
+          <div class="desktop-app-icon" onclick="showScreen('api-settings-screen')">
+            <div class="icon-bg-desktop">
+              <img id="icon-img-api-settings" src="https://i.postimg.cc/MK8rJ8t7/IMG-6438.jpg" alt="API设置" />
+            </div>
+            <span class="label">API设置</span>
           </div>
-          <span class="label">API设置</span>
-        </div>
 
-        <div class="desktop-app-icon" id="studio-app-icon">
-          <div class="icon-bg-desktop">
-            <img id="icon-img-studio" src="https://i.postimg.cc/W3sLz11s/clapperboard-icon.png" alt="小剧场" />
+          <div class="desktop-app-icon" id="studio-app-icon">
+            <div class="icon-bg-desktop">
+              <!-- 这里的 id="icon-img-studio" 必须保留，用于JS识别更换图标 -->
+              <img id="icon-img-studio" src="https://i.postimg.cc/W3sLz11s/clapperboard-icon.png" alt="小剧场" />
+            </div>
+            <!-- lrq小剧场 -->
+            <span class="label">lrq小剧场</span>
           </div>
-          <span class="label">lrq小剧场</span>
-        </div>
 
-        <div class="desktop-app-icon" onclick="showScreen('font-settings-screen')">
-          <div class="icon-bg-desktop">
-            <img id="icon-img-font" src="https://i.postimg.cc/pXxk1JXk/IMG-6442.jpg" alt="字体" />
+          <div class="desktop-app-icon" onclick="showScreen('font-settings-screen')">
+            <div class="icon-bg-desktop">
+              <img id="icon-img-font" src="https://i.postimg.cc/pXxk1JXk/IMG-6442.jpg" alt="字体" />
+            </div>
+            <span class="label">字体</span>
           </div>
-          <span class="label">字体</span>
-        </div>
-
-        <div class="desktop-app-icon" onclick="showScreen('wallpaper-screen')">
-          <div class="icon-bg-desktop">
-            <img id="icon-img-wallpaper" src="https://i.postimg.cc/T1j03pQr/IMG-6440.jpg" alt="外观设置" />
+          <div class="desktop-app-icon" onclick="showScreen('wallpaper-screen')">
+            <div class="icon-bg-desktop">
+              <img id="icon-img-wallpaper" src="https://i.postimg.cc/T1j03pQr/IMG-6440.jpg" alt="外观设置" />
+            </div>
+            <span class="label">外观设置</span>
           </div>
-          <span class="label">外观设置</span>
         </div>
-      </div>
 
       <!-- ========================== -->
       <!-- QQ 聊天系统 -->
