@@ -2,49 +2,95 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>TaTaOS</title>
 
-    <!-- 系统核心样式，可自行美化 -->
     <style>
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
       body {
         margin: 0;
         padding: 0;
-        background: #fafafa;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        overflow: hidden;
-      }
-
-      #phone-frame {
         width: 100vw;
         height: 100vh;
         display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top, #f5fcff, #e5f0f2 55%, #d5e2e4);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+        overflow: hidden;
+      }
+
+      /* 整个手机外壳 */
+      .phone-shell {
+        width: 360px;
+        max-width: 100vw;
+        height: 720px;
+        max-height: 100vh;
+        background: #fdfefe;
+        border-radius: 38px;
+        box-shadow:
+          0 18px 40px rgba(0, 0, 0, 0.28),
+          0 0 0 1px rgba(255, 255, 255, 0.8);
+        padding: 16px 12px;
+        display: flex;
         flex-direction: column;
+        position: relative;
+      }
+
+      /* 听筒区域 */
+      .phone-notch {
+        width: 120px;
+        height: 16px;
+        background: #101316;
+        border-radius: 999px;
+        margin: 0 auto 8px;
+      }
+
+      /* 里面真正的屏幕 */
+      #phone-frame {
+        flex: 1;
+        border-radius: 26px;
+        background: linear-gradient(180deg, #f6fbfc, #f0f7f8);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        position: relative;
       }
 
       /* 顶部状态栏 */
       #status-bar {
         height: 26px;
-        background: rgba(0, 0, 0, 0.85);
-        color: white;
+        padding: 0 12px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 10px;
         font-size: 12px;
+        color: #ffffff;
+        background: linear-gradient(90deg, rgba(88, 124, 138, 0.9), rgba(132, 173, 182, 0.9));
       }
 
-      /* 主屏 */
+      #status-left,
+      #status-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* 主屏 2×2 图标区 */
       #home-screen {
         flex: 1;
+        padding: 18px 18px 10px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
-        padding: 20px;
         gap: 18px;
-        box-sizing: border-box;
       }
 
       .app-icon {
@@ -57,9 +103,11 @@
       }
 
       .app-icon img {
-        width: 60px;
-        height: 60px;
-        border-radius: 16px;
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        background: #dfecef;
+        object-fit: cover;
       }
 
       .app-icon span {
@@ -72,153 +120,250 @@
         height: 72px;
         background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(180, 195, 199, 0.6);
         display: flex;
         justify-content: space-around;
         align-items: center;
-        border-top: 1px solid #ddd;
       }
 
       #dock img {
         width: 52px;
         height: 52px;
-        border-radius: 14px;
+        border-radius: 16px;
+        background: #e0ebed;
+        object-fit: cover;
+        cursor: pointer;
       }
 
-      /* App 页面（隐藏显示） */
+      /* App 页面 */
       .app-screen {
         display: none;
-        width: 100%;
-        height: calc(100vh - 26px - 72px);
-        background: white;
         position: absolute;
-        top: 26px;
+        top: 26px; /* 挡在状态栏下方 */
         left: 0;
+        width: 100%;
+        height: calc(100% - 26px - 72px); /* 状态栏 + dock */
+        background: #ffffff;
         overflow-y: auto;
       }
 
       .app-screen.active {
         display: block;
       }
+
+      .app-header {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        border-bottom: 1px solid #edf0f2;
+        background: #f7fafb;
+        font-size: 14px;
+      }
+
+      .app-header button {
+        border: none;
+        background: none;
+        font-size: 16px;
+        margin-right: 8px;
+        cursor: pointer;
+      }
+
+      .app-body {
+        padding: 12px;
+        font-size: 14px;
+        color: #333;
+      }
     </style>
 
     <script>
       function openApp(id) {
-        document.querySelectorAll(".app-screen")
-          .forEach(s => s.classList.remove("active"));
-        document.getElementById(id).classList.add("active");
+        document
+          .querySelectorAll(".app-screen")
+          .forEach((s) => s.classList.remove("active"));
+        const target = document.getElementById(id);
+        if (target) target.classList.add("active");
       }
 
       function backHome() {
-        document.querySelectorAll(".app-screen")
-          .forEach(s => s.classList.remove("active"));
+        document
+          .querySelectorAll(".app-screen")
+          .forEach((s) => s.classList.remove("active"));
       }
+
+      // 更新时间
+      document.addEventListener("DOMContentLoaded", () => {
+        const timeEl = document.getElementById("time-text");
+        const dateEl = document.getElementById("date-text");
+
+        function updateTime() {
+          const now = new Date();
+          timeEl.textContent = now.toLocaleTimeString("zh-CN", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          dateEl.textContent = now.toLocaleDateString("zh-CN", {
+            month: "2-digit",
+            day: "2-digit",
+          });
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+      });
     </script>
   </head>
 
   <body>
-    <div id="phone-frame">
+    <div class="phone-shell">
+      <div class="phone-notch"></div>
 
-      <!-- 状态栏（保留原样） -->
-      <div id="status-bar">
-        <span>TaTaOS</span>
-        <span id="time"></span>
-      </div>
-
-      <script>
-        // 实时更新时间
-        setInterval(() => {
-          const now = new Date();
-          document.getElementById("time").innerText =
-            now.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" });
-        }, 1000);
-      </script>
-
-      <!-- 首页（2×2 原样） -->
-      <div id="home-screen">
-
-        <div class="app-icon" onclick="openApp('qq-screen')">
-          < img src="icon-qq.png" />
-          <span>QQ</span>
+      <div id="phone-frame">
+        <!-- 状态栏 -->
+        <div id="status-bar">
+          <div id="status-left">
+            <span>TaTaOS</span>
+          </div>
+          <div id="status-right">
+            <span id="date-text"></span>
+            <span id="time-text"></span>
+          </div>
         </div>
 
-        <div class="app-icon" onclick="openApp('book-screen')">
-          < img src="icon-book.png" />
-          <span>世界书</span>
+        <!-- 主屏 2×2 图标区（原样） -->
+        <div id="home-screen">
+          <div class="app-icon" onclick="openApp('qq-screen')">
+            <img src="icon-qq.png" alt="QQ" />
+            <span>QQ</span>
+          </div>
+
+          <div class="app-icon" onclick="openApp('book-screen')">
+            <img src="icon-book.png" alt="世界书" />
+            <span>世界书</span>
+          </div>
+
+          <div class="app-icon" onclick="openApp('phonecheck-screen')">
+            <img src="icon-phone.png" alt="查手机" />
+            <span>查手机</span>
+          </div>
+
+          <div class="app-icon" onclick="openApp('kk-screen')">
+            <img src="icon-kk.png" alt="KK查岗" />
+            <span>KK查岗</span>
+          </div>
         </div>
 
-        <div class="app-icon" onclick="openApp('phonecheck-screen')">
-          < img src="icon-phone.png" />
-          <span>查手机</span>
+        <!-- 底部 dock（小剧场在这里） -->
+        <div id="dock">
+          <img src="icon-api.png" alt="API设置" onclick="openApp('api-screen')" />
+          <img src="icon-theatre.png" alt="小剧场" onclick="openApp('theatre-screen')" />
+          <img src="icon-font.png" alt="字体" onclick="openApp('font-screen')" />
+          <img src="icon-style.png" alt="外观" onclick="openApp('style-screen')" />
         </div>
 
-        <div class="app-icon" onclick="openApp('kk-screen')">
-          < img src="icon-kk.png" />
-          <span>KK查岗</span>
+        <!-- 各 App 页面骨架，你之后慢慢填内容 -->
+
+        <div id="qq-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>QQ</span>
+          </div>
+          <div class="app-body">
+            这里以后可以放 QQ 相关的界面。  
+          </div>
         </div>
 
+        <div id="book-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>世界书</span>
+          </div>
+          <div class="app-body">
+            这里可以放你的世界书内容。
+          </div>
+        </div>
+
+        <div id="phonecheck-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>查手机</span>
+          </div>
+          <div class="app-body">
+            这里是查手机的功能区域。
+          </div>
+        </div>
+
+        <div id="kk-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>KK查岗</span>
+          </div>
+          <div class="app-body">
+            这里以后可以挂你的 KK 查岗逻辑。
+          </div>
+        </div>
+
+        <div id="api-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>API 设置</span>
+          </div>
+          <div class="app-body">
+            这里预留给 TaTaOS 的 API / 高级设置。
+          </div>
+        </div>
+
+        <div id="theatre-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>小剧场</span>
+          </div>
+          <div class="app-body">
+            这里以后可以放 LRQ 小剧场、你的文本、短篇等等。
+          </div>
+        </div>
+
+        <div id="font-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>字体设置</span>
+          </div>
+          <div class="app-body">
+            这里预留给字体大小、行距、主题字体之类的设置。
+          </div>
+        </div>
+
+        <div id="style-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>外观设置</span>
+          </div>
+          <div class="app-body">
+            这里可以放主题色、壁纸、浅色深色模式等。
+          </div>
+        </div>
+
+        <!-- studio / date 备用页面 -->
+        <div id="studio-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>Studio</span>
+          </div>
+          <div class="app-body">
+            这里以后可以作为工作室 / 小工具集合。
+          </div>
+        </div>
+
+        <div id="date-screen" class="app-screen">
+          <div class="app-header">
+            <button onclick="backHome()">‹</button>
+            <span>Date</span>
+          </div>
+          <div class="app-body">
+            这里预留给时间轴、纪念日、倒计时等。
+          </div>
+        </div>
       </div>
-
-      <!-- Dock（原样保留，小剧场在这里） -->
-      <div id="dock">
-        < img src="icon-api.png" onclick="openApp('api-screen')" />
-        < img src="icon-theatre.png" onclick="openApp('theatre-screen')" />
-        < img src="icon-font.png" onclick="openApp('font-screen')" />
-        < img src="icon-style.png" onclick="openApp('style-screen')" />
-      </div>
-
-      <!-- 以下为保留的功能页（可自己填内容） -->
-
-      <div id="qq-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>QQ</h2>
-      </div>
-
-      <div id="book-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>世界书</h2>
-      </div>
-
-      <div id="phonecheck-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>查手机</h2>
-      </div>
-
-      <div id="kk-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>KK 查岗</h2>
-      </div>
-
-      <div id="api-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>API 设置</h2>
-      </div>
-
-      <div id="theatre-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>小剧场</h2>
-      </div>
-
-      <div id="font-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>字体设置</h2>
-      </div>
-
-      <div id="style-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>外观设置</h2>
-      </div>
-
-      <!-- studio & date 的空壳我也帮你预留了 -->
-      <div id="studio-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>工作室（Studio）</h2>
-      </div>
-
-      <div id="date-screen" class="app-screen">
-        <button onclick="backHome()">返回</button>
-        <h2>时间功能（Date）</h2>
-      </div>
-
     </div>
   </body>
 </html>
