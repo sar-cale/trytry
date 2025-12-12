@@ -73,7 +73,15 @@
     <style></style>
 
     <style id="custom-theme-style"></style>
-  </head>
+  
+<style>
+img[src*="postimage"],
+img[alt*="not found"] {
+  display: none !important;
+}
+</style>
+
+</head>
   <body>
     <div id="phone-screen">
       <div id="status-bar">
@@ -225,80 +233,7 @@
           </div>
 
           <!-- 新增的第二页，现在是自定义布局 -->
-          <div class="home-page">
-            <!-- 左半边的头像小组件 -->
-            <div id="second-page-left-widget" class="custom-widget-container">
-              <div class="widget-circle-uploader">
-                <img
-                  id="widget-image-3"
-                  src="https://i.postimg.cc/qRqpK5kP/anime-avatar.jpg"
-                  class="editable-image"
-                  title="点击更换图片"
-                />
-              </div>
-
-              <div id="second-page-bubble" class="widget-bubble editable-text" contenteditable="true">点击编辑文字</div>
-
-              <div id="new-bubbles-container">
-                <div id="flat-capsule-bubble" class="widget-bubble editable-text" contenteditable="true">可编辑</div>
-                <div id="circular-bubble" class="widget-bubble editable-text" contenteditable="true">文字</div>
-              </div>
-            </div>
-            <!-- 右上角的两个并排图标 -->
-            <div id="second-page-top-right-apps">
-              <div class="desktop-app-icon" onclick="showScreen('forum-screen')">
-                <div class="icon-bg-desktop">
-                  <img id="icon-img-forum" src="https://i.postimg.cc/pr0T3WfC/douban-icon.png" alt="圈子" />
-                </div>
-                <span class="label">圈子</span>
-              </div>
-              
-                <span class="label">情侣空间</span>
-              </div>
-
-              <div id="second-page-x-social-app" class="desktop-app-icon" onclick="showScreen('x-social-screen')">
-                <div class="icon-bg-desktop">
-                  <img id="icon-img-x-social" src="https://i.postimg.cc/8P1H0vQ8/x-logo.png" alt="X社交" />
-                </div>
-                <span class="label">X社交</span>
-              </div>
-
-              <div id="center-avatar-wrapper">
-                <!-- 原来的头像，放在了新容器的中心 -->
-                <div id="second-page-center-avatar" class="custom-widget-container">
-                  <div class="widget-circle-uploader">
-                    <img
-                      id="widget-image-4"
-                      src="https://i.postimg.cc/qRqpK5kP/anime-avatar.jpg"
-                      class="editable-image"
-                      title="点击更换图片"
-                    />
-                  </div>
-                </div>
-
-                <!-- 头像下方的可编辑文字框 -->
-                <div id="avatar-subtitle" class="editable-text">点击编辑文字</div>
-
-                <!-- 头像四个角的可编辑气泡 -->
-                <div class="corner-bubble editable-text" id="bubble-top-left">左上角</div>
-                <div class="corner-bubble editable-text" id="bubble-top-right">右上角</div>
-                <div class="corner-bubble editable-text" id="bubble-bottom-left">左下角</div>
-                <div class="corner-bubble editable-text" id="bubble-bottom-right">右下角</div>
-              </div>
-
-              <div style="position: absolute; top: 100px; right: 85px">
-                <div class="desktop-app-icon" onclick="showScreen('game-hall-screen')">
-                  <div class="icon-bg-desktop">
-                    <img
-                      id="icon-img-game-hall"
-                      src="https://i.postimg.cc/P5gL5z2g/game-controller-icon.png"
-                      alt="游戏大厅"
-                    />
-                  </div>
-                  <span class="label">游戏大厅</span>
-                </div>
-              </div>
-            </div>
+          
 
             <div id="new-custom-widget">
               <!-- 用一个新的容器把月份和头像包起来 -->
@@ -387,9 +322,8 @@
 
         <!-- 小圆点 -->
         <div class="pagination-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-        </div>
+  <span class="dot active"></span>
+</div>
       </div>
 
       <div id="weibo-screen" class="screen"></div>
